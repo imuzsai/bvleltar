@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head.ejs'); %>
+        <title><%=title%></title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <%- include('../partials/header.ejs'); %>
+        </header>
+
+        <main>      
+                <% if ( typeof flash != 'undefined' ) { %>
+                    <% if ( flash.error ) { %>
+                    <div class="alert alert-danger col-md-12"><%= flash.error %>
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    </div>
+                    <% } %>
+                    <% if ( flash.info ) { %>
+                        <div class="alert alert-success col-md-12"><%= flash.info %>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        </div>
+                    <% } %>
+                <% } %>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                        <form name="filter" class="form-inline" style="display: inline;" action="/admin/prodevents/filter" method="GET">
+                        <div class="form-group">
+                        <!-- <label for="sel1">Szűrés művelet szerint</label> -->
+                        <select class="form-control" id="eventSelect" name="eventSelect" >
+                        <option default value="">Művelet</option>
+                        <option value="Termék hozzáadása" >Termék hozzáadása</option>
+                        <option value="Termék frissítése" >Termék frissítése</option>
+                        <option value="Termék törlése" >Termék törlése</option>
+                        </select>
+                        <!-- <label for="sorting">Felhasználó</label> -->
+                        <select class="form-control" id="userSelect" name="userSelect" onchange="" >
+                        <option default value="" >Felhasználó</option>
+                         <% userSelectorVals.forEach(function(user) { %>
+                        <option value="<%- user%>"><%- user%></option>
+                        <% }); %>
+                        </select>
+                        <!-- <label for="sorting">Dátumválasztó</label> -->
+                        <input type="date" class="form-control" id="startDateSelect" name="startDateSelect" min="<%-dateSelectorStart%>" max="<%-dateSelectorEnd%>" value="<%-dateSelectorStart%>"/>
+                        <input type="date" class="form-control" id="endDateSelect" name="endDateSelect" min="<%-dateSelectorStart%>"  max="<%-dateSelectorEnd%>" value="<%-dateSelectorEnd%>"/>
+                        <!-- szures termekId-re -->
+                        <input type="text" class="form-control" id="productIdInput" name="productIdInput" placeholder="termékID" />
+                        <!--rejtett mezo a szures jelzesere -->
+                        <input type="hidden" id="isFilter" name="isFilter" value="1">
+                        <!--submit gomb a szuresre -->
+                        <input type="submit" class="form-control btn-success" id="" name="" value="Szűrés"></input>
+                        <!-- visszallit gomb -->
+                        <input type="button" class="form-control btn-alert" id="" name="" value="Visszaállít" onClick="window.location.href='/admin/prodevents'"></input>
+                        </div>
+                        </form>
+
+                        <!-- szoveges kereso blokk
+                        <form name="filter" class="form-inline" style="display: inline;" action="/admin/prodevents/kereses" method="">
+                        <input type="text" class="form-control" id="" name="" placeholder="keresés a múveletekben" />
+                        <button class="btn btn-default" type="search" >
+                          <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                        </form>
+                        -->
+                        </div>
+                    </div>
+                <br/>
+                    <div class="row">
+                        <div class="col-md-12">
+                           <div class="table table-responsive">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <th>Dátum</th>
+                                        <th>Művelet</th>
+                                        <th>TermékId</th>
+                                        <th>Felhasználó</th>
+                                        <th>Régi adatok</th>
+                                        <th>Jelenlegi adatok</th>
+                                    </thead>
+                                    <tbody>
+                                        <% results.forEach(function(elem) { %>
+                                            <tr>
+                                                <td>
+                                                    <%=elem.date %>
+                                                </td>
+                                                <td>
+                                                    <%=elem.event%>
+                                                </td>
+                                                <td>
+                                                    <%=elem.productid %>
+                                                </td>
+                                                <td>
+                                                    <%=elem.username %>
+                                                </td>
+                                                <td>
+                                                    SKU: <%=elem.old_sku%></br>
+                                                    Név: <%=elem.old_name%></br>
+                                                    Ár: <%=elem.old_price%></br>
+                                                    Mennyiség: <%=elem.old_quantity%></br>
+                                                    Megjegyzés: <%=elem.old_comment%></br>
+                                                </td>
+                                                <td>
+                                                    SKU: <%=elem.product_sku%></br>
+                                                    Név: <%=elem.product_name%></br>
+                                                    Ár: <%=elem.price%></br>
+                                                    Mennyiség: <%=elem.quantity%></br>
+                                                    Megjegyzés: <%=elem.comment%></br>
+                                                </td>
+
+                                            </tr>
+                                            <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+    <% if (paginate.hasPreviousPages || paginate.hasNextPages(pageCount) ) { %>
+  <div class="navigation well-sm" id="pagination">
+    <ul class="pager">
+      <% if (paginate.hasPreviousPages) { %>
+        <li class="Előző">
+          <a href="<%= paginate.href(true) %>">
+            <i class="fa fa-arrow-circle-left"></i>
+            Előző
+          </a>  
+        </li>
+      <% } %>  
+      <% if (pages) { %>
+        <% pages.forEach(function(page, i){ %>
+          <a class="<%= paginate.page == page.number ? 'active btn btn-default' : 'btn btn-default'%>" href="<%= page.url %>"><%= page.number %></a>
+        <% }); %>
+      <% } %>  
+      <% if (paginate.hasNextPages(pageCount)) { %>
+        <li class="Következő">
+          <a href="<%= paginate.href() %>">
+            Következő &nbsp;
+            <i class="fa fa-arrow-circle-right"></i>
+          </a>  
+        </li>
+      <% } %>  
+      </ul>      
+    </div>
+  <% } %>
+                        </div>
+                    </div>
+                    <div class="ct-chart ct-perfect-fourth"></div>
+        </main>
+        <footer>
+            <%- include('../partials/footer.ejs'); %>
+        </footer>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head.ejs'); %>
+        <title><%=title%></title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <%- include('../partials/header.ejs'); %>
+        </header>
+
+        <main>      
+                <% if ( typeof flash != 'undefined' ) { %>
+                    <% if ( flash.error ) { %>
+                    <div class="alert alert-danger col-md-12"><%= flash.error %>
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    </div>
+                    <% } %>
+                    <% if ( flash.info ) { %>
+                        <div class="alert alert-success col-md-12"><%= flash.info %>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        </div>
+                    <% } %>
+                <% } %>
+                
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table text-center">
+                                <table class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                        <th>Id</th>
+                                        <th>Felhasználónév</th>
+                                        <th>Státusz</th>
+                                        <th>Szerepkör</th>
+                                        <th></th>
+                                    </thead>
+                                    <tbody>
+                                        <% results.forEach(function(elem) { %>
+                                            <tr>
+                                                <td>
+                                                    <%=elem.id %>
+                                                </td>
+                                                <td>
+                                                    <%=elem.username %>
+                                                </td>
+                                                <td>
+                                                <% if (elem.status==0) { %>
+                                                    <b>Kikapcsolva</b>
+                                                <% } else{ %> 
+                                                    Aktív
+                                                <% } %>     
+                                                </td>
+                                                <td>
+                                                    <%=elem.roleName %>
+                                                </td>
+                                                <td>
+                                                    <a href="/admin/users/edit/<%=elem.id%>"><img src="/images/editicon.png" style="max-width:50px;"  title="Szerkesztés" class="img-thumbnail"></a>
+                                                </td>
+                                            </tr>
+                                            <% }); %>
+                                </tbody>
+                         </table>
+                </div>
+             <div class="row">
+                    <div class="col-md-12 text-right">
+                        <a type="button" class="btn btn-primary" href="/admin/users/add"><span class="glyphicon glyphicon-plus"></span> Felhasználó hozzáadása</a>
+                    </div>
+            </div>
+        </main>
+        <footer>
+            <%- include('../partials/footer.ejs'); %>
+        </footer>
+    </div>
+</body>
+
+</html>

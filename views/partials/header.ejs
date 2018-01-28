@@ -1,0 +1,45 @@
+<nav class="navbar navbar-info" style="background-color: #92a8d1;" role="navigation" id="headernav">
+    <div class="container-fluid">
+        <div class="navbar-header">
+         <a class="navbar-brand text-center center-block" style="color: #ffffff; font-size: 26px; font-weight: bold;" href="/">BabaVár</a>
+        </div>
+            <ul class="nav navbar-nav">
+            <li class="dropdown">
+            <a data-toggle="dropdown" role="button" href="#"><span class="glyphicon glyphicon-menu-hamburger"></span> Menük<span class="caret"></span></a>
+            <ul class="dropdown-menu">
+            <li><a href="/"><span class=""></span> Főoldal </a></li>
+            <li><a href="/products/add"><span class="glyphicon glyphicon-plus"></span> Termék hozzáadása</a></li>
+            <li><a href="/admin"><span class="glyphicon glyphicon-flash"></span> Admin funkciók</a></li>
+            </ul>
+            </li>
+            </ul>
+           
+              <form class="navbar-form navbar-right" name="search" id="search" action="/kereses" method="GET">
+                    <div class="input-group">
+                      <input type="text" class="form-control" id="keresSzoveg" name="keresSzoveg" placeholder="Termék Keresése">
+                      <input type="hidden" id="sort" name="sort" value="product_name">
+                      <input type="hidden" id="order" name="order" value="asc">
+                      <div class="input-group-btn">
+                        <button class="btn btn-default" type="search" >
+                          <i class="glyphicon glyphicon-search"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="input-group">
+                    <a href="/logout" style="color:#ffffff; padding:10px;" role="button" ><span class="glyphicon glyphicon-log-out"></span> Kilépés </a>
+                    </div>
+              </form>
+            <div id="info" class="info text-right">
+            <span class="username">Belépve: <b><%=userName%></b></span>
+            </div>
+    </div>
+</nav>
+
+  
+<!--
+<div class="row">
+  <div class="col-md-12">
+    <a href="/products/add" class="pull-right" role="button"><span class="glyphicon glyphicon-plus"></span> Termék hozzáadása</a>
+  </div>
+</div>
+-->

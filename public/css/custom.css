@@ -1,0 +1,116 @@
+
+body {
+    background-color:#C9CDD0;
+    /*background-image: url("../images/bk1.jpg");*/
+}
+
+.container{
+    padding-right: 0px;
+}
+
+
+#menu a:hover{
+    background-color: #92a8d1;
+    font-weight: bold;
+   
+}
+.form-group{
+    margin-bottom: 5px;
+}
+.panel-body{
+    padding-bottom: 2px;
+}
+.panel-charts{
+    height: 450px;
+}
+
+.panel-admin{
+    min-height: 500px;
+}
+.list-group-item{
+    padding: 8px;
+}
+.disabled{
+    display: none !important;
+}
+.placeholder{
+    text-align: center;
+    margin:0px auto;
+    padding: 5px;
+}
+.comment{
+    font-size: 8px;
+}
+.chart {
+    width: 95%; 
+    min-height: 300px;
+  }
+.username {
+    color: lightcyan;
+    font-size: 16px;
+    text-decoration: underline;
+}
+.info{
+    display:inline-block;
+    padding: 10px;
+    float: right;
+}
+
+.img-dashboard{
+    width: 100px; margin:0 auto;
+}
+
+.table-bordered {
+    border:1px solid lightgray;
+}
+
+td{
+    word-wrap: break-word;
+    min-width: 50px;
+    max-width: 190px;
+    padding:10px;
+}
+th, td {
+    vertical-align:middle;
+    text-align:center;
+}
+th{
+    font-size:16px;
+}
+
+.panel-login {
+    max-height: 350px;
+}
+
+.nav>li>a {
+    color:#ffffff; 
+    font-size:16px;
+}
+
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+    background-color:#92a8d1;
+    border-color: #337ab7;
+}
+.navbar-nav>li>a:hover{
+    background-color: #92a8d1;
+    border-color: #337ab7;
+}
+
+.navbar-nav>li>.dropdown-menu{
+    color:white;
+}
+.dropdown-menu {
+    background-color: #92a8d1;
+}
+.dropdown-menu>li>a{
+    color:white;
+}
+th, .panel-default>.panel-heading{
+    background:#92a8d1;
+    color:white;
+}
+
+.table-hover tbody tr:hover td {
+    background: #5cb85c;
+    color: white;
+}

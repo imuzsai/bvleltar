@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head.ejs'); %>
+        <title><%=title%></title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <%- include('../partials/header.ejs'); %>
+        </header>
+        <main>
+                    <!--flash uzenetek-->
+                    <% if ( typeof flash != 'undefined' ) { %>
+                    <% if ( flash.error ) { %>
+                    <div class="alert alert-danger col-md-12">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    <% if(flash.error.length == 1) { %>
+                    <strong> <%= flash.error %> </strong>
+                    <% } else { %>
+                    <ul>
+                    <% flash.error.forEach(function(err) { %>
+                        <li> <strong> <%= err %> </strong></li>
+                        <% }) %>
+                    </ul>
+                    <% } %> 
+                    </div>
+                    <% } %>
+                    <% if ( flash.info ) { %>
+                        <div class="alert alert-success col-md-12"><%= flash.info %>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        </div>
+                    <% } %>
+                    <% } %>
+
+    <div class="row">
+        <div class="col-md-12">
+                <div class="panel panel-info">
+                <div class="panel-heading">Felhasználó hozzáadása</div>
+                <div class="panel-body">
+
+                    <form name="adduser" action="/admin/users/add" method="post">
+                        <div class="form-group">
+                        <div class="row">
+                        <label for="user" class="control-label col-md-3">Felhasználónév: (min. 6 karakter) </label>
+                        <div class="col-md-9">
+                        <input type="textbox" class="form-control" name="username" id="user" value="" minlength="6" required></br>
+                        </div>
+                        </div>
+                        </div>
+
+                        <div class="form-group">
+                        <div class="row">
+                        <label for="pwd" class="control-label col-md-3">Jelszó: (min. 8 karakter) </label>
+                        <div class="col-md-9">
+                        <input type="password" class="form-control" name="password" id="pwd" minlength="8" required></br>
+                        </div>
+                        </div>
+                        </div>
+
+
+                        <div class="form-group">
+                        <div class="row">
+                        <label for="pwd2" class="control-label col-md-3">Jelszó újra: (min. 8 karakter) </label>
+                        <div class="col-md-9">
+                        <input type="password" class="form-control" name="password2" id="pwd2" minlength="8" required></br>
+                        </div>
+                        </div>
+                        </div>
+                        
+                        <div class="form-group">
+                        <div class="row">
+                        <label for="roleSelect" class="control-label col-md-3">Szerepkör:</label>
+                        <div class="col-md-9">
+                            <select class="form-control" name="roleSelect" id="roleSelect">
+                                <option value="1">Adminisztrátor</option>
+                                <option selected value="2">Shopadmin</option>
+                                <option value="3">Adatrögzítő</option>
+                            </select>
+                        </div>
+                        </div>
+                        </div>
+                        <br/>
+
+                        <div class="row">
+                        <div class="form-group">
+                        <div class="col-md-12 text-center">
+                        <button type="submit" class="btn btn-success">Hozzáadás</button>
+                        <button type="button" class="btn btn-danger" onclick="window.location.href=(document.referrer)";>Mégse</button>
+                        </div>
+                        </div>
+                        </div>
+                        <br/>
+                    </form>    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+         <footer>
+                <%- include('../partials/footer.ejs'); %>
+        </footer>    
+</div> <!--container vege-->
+</body>
+</html>

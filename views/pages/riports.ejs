@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head.ejs'); %>
+    <script>//ejs valtozok atadasa kliens javascriptnek a chart generalashoz
+    let inStockCount = <%-inStockCount%>;
+    let notInStockCount = <%-notInStockCount%>;
+    let eventCounts = <%- JSON.stringify(eventCounts)%>;
+    let eventStats = <%- JSON.stringify(eventStats)%>;
+    </script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="/js/charts.js"></script>
+    <title><%=title%></title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <%- include('../partials/header.ejs'); %>
+        </header>
+            <main>
+                <div class="row">
+                    <div class="col-md-6">
+                    <div class="panel panel-default panel-charts">
+                    <div class="panel-heading">Készletinformációk</div>
+                    <div class="panel-body">
+                    <p><b>Készleten:</b> <%-inStockCount%> db termék <br/>
+                       <b>Nincs készleten:</b> <%-notInStockCount%> db termék</p>
+                    <div id="piechart" class="chart"></div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="col-md-6">
+                    <div class="panel panel-default panel-charts">
+                    <div class="panel-heading">Termék műveletek az elmúlt 7 napban</div>
+                    <div class="panel-body">
+                    <p>Műveletek száma: <%-allEventCounts%></p>
+                    <div id="barchart" class="chart"></div>
+                    </div>
+                    </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                <div class="col-md-10">
+                    <div class="panel panel-default panel-charts">
+                    <div class="panel-heading">Műveletek részletek</div>
+                    <div class="panel-body">
+
+                    <div id="barchart2" class="chart"></div>
+                    </div>
+                    </div>
+                    </div>
+                </div>
+            </main>
+        <footer>
+                <%- include('../partials/footer.ejs'); %>
+        </footer>    
+    </div> 
+</body>
+</html>

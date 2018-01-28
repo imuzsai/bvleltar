@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head.ejs'); %>
+    <title><%=title%></title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <%- include('../partials/header.ejs'); %>
+        </header>
+        <main>
+                <% if ( typeof flash != 'undefined' ) { %>
+                    <% if ( flash.error ) { %>
+                    <div class="alert alert-danger col-md-12">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    <% if(flash.error.length == 1) { %>
+                    <strong> <%= flash.error %> </strong>
+                    <% } else { %>
+                    <ul>
+                    <% flash.error.forEach(function(err) { %>
+                        <li> <strong> <%= err %> </strong></li>
+                        <% }) %>
+                    </ul>
+                    <% } %> 
+                    </div>
+                    <% } %>
+                    <% if ( flash.info ) { %>
+                        <div class="alert alert-success col-md-12"><%= flash.info %>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        </div>
+                    <% } %>
+                <% } %>
+            
+            <div class="panel panel-primary">
+            <div class="panel-heading"><h5>Felhasználó módosítása</h5></div>
+            <div class="panel-body">
+                
+                <form name="modosit" action="/admin/users/update" method="post">
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="userId">Felhasználó azonosító:</label>
+                <div class="col-md-10">
+                <input type="text" class="form-control" name="userId" id="userId" value="<%=result[0].id%>" readonly/><br/>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="username">Felhasználónév:</label>
+                <div class="col-md-10">
+                <input type="text" class="form-control" name="username" id="username" minlength="6" maxlength="15" readonly value="<%=result[0].username%>" /><br/>
+                </div>
+                </div>
+                </div>
+                
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="statusSelect">Státusz: </label>
+                <div class="col-md-10">
+                <select class="form-control" name="statusSelect" id="statusSelect">
+                    <option value="0">Kikapcsolva</option>
+                    <option value="1">Aktív</option>
+                </select>
+                </br>
+                </div>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <div class="row">
+                <label for="roleSelect" class="control-label col-md-2">Szerepkör:</label>
+                <div class="col-md-10">
+                    <select class="form-control" name="roleSelect" id="roleSelect">
+                        <option value="1">Adminisztrátor</option>
+                        <option value="2">Shopadmin</option>
+                        <option value="3">Adatrögzítő</option>
+                    </select>
+                </div>
+                </div>
+                </div>
+                </br>
+                
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="password">Jelszó:</label>
+                <div class="col-md-10">
+                <input type="password" class="form-control" disabled name="password" id="password" minlength="8" value=""/><br/>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="password2">Jelszó újra:</label>
+                <div class="col-md-10">
+                <input type="password" class="form-control" disabled name="password2" id="password2" minlength="8" value=""/><br/>
+                </div>
+                </div>
+                </div>
+                <div class="col-md-12 text-center">
+                <div class="form-group">
+                <label class="checkbox"><input type="checkbox" value="" name="checkPassEdit" id="checkPassEdit" onclick="enablePassForm();">Jelszó módosítása</label>
+                </div>
+                </div>
+                
+                </div> <!--end of row--> 
+
+                <div class="row">
+                 <div class="form-group">
+                    <div class="col-md-12 text-center">
+                        <!-- <input type="hidden" id="userChange" name="userChange" value="false"/> -->
+                        <button type="submit" class="btn btn-success">Frissítés</button>
+                        <button type="button" class="btn btn-danger" onclick="window.location.href=(document.referrer)";>Mégse</button>
+                    </div>
+                </div>
+                </div>
+                <br/>
+        </form>           
+    </div>
+</div>
+
+ </main>
+         <footer>
+                <%- include('../partials/footer.ejs'); %>
+        </footer>    
+</div>
+<script type="text/javascript">
+    var result = JSON.parse('<%- JSON.stringify(result) %>');
+    document.getElementById("statusSelect").selectedIndex = result[0].status;
+    document.getElementById("roleSelect").selectedIndex = result[0].roleId-1;
+</script>
+
+</body>
+</html>

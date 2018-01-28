@@ -1,0 +1,169 @@
+<!--nyomtatasi gomb-->
+<!---
+<div class="row">
+<div class="col-md-12 text-right">
+<button type="button" class="btn btn-info"><span class="glyphicon glyphicon-print"></span></button>
+</div>
+</div>
+-->
+<!-- -->
+<!--fo panel-->
+<div class="row">
+<div class="col-md-12">
+<div class="panel panel-default">
+<div class="panel-heading"><h4><b>Termék módosítása</b></h4></div>
+    <div class="panel-body">
+                <!--
+                <div class="row">
+                <div class="col-md-12 text-right">
+                <button type="button" class="btn btn-info" onclick="printPreview();"><span class="glyphicon glyphicon-print"></span></button>
+                </div>
+                </div>
+                </br>
+                -->
+
+                <form name="modosit" action="/products/update" method="post" onsubmit="">
+                <div class="row">
+                <div class="form-group">
+                <input type="hidden" id="prodId" name="prodId" value="<%=result[0].product_id%>"/>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodSku">Cikkszám(sku):</label>
+                <div class="col-md-10">
+                <input type="text" class="form-control" name="prodSku" id="prodSku" onkeyup="this.value = this.value.toUpperCase();" required onchange="run();" maxlength="8" value="<%=result[0].product_sku%>" /><br/>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodName">Terméknév:</label>
+                <div class="col-md-10">
+                <input type="text" class="form-control" name="prodName" id="prodName" required maxlength="100" value="<%=result[0].product_name%>"/><br/>
+                </div>
+                </div>
+                </div>
+
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodQty">Mennyiség (db):</label>
+                <div class="col-md-10">
+                <input type="text" class="form-control" name="prodQty" id="prodQty" required maxlength="5" value="<%=result[0].quantity%>"/><br/>
+                </div>
+                </div>
+                </div>
+        
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodPrice">Ár (Ft.):</label>
+                <div class="col-md-10">
+                <input type="text" class="form-control" name="prodPrice" id="prodPrice" required maxlength="8" value="<%=result[0].price%>"/><br/>
+                </div>
+                </div>
+                </div>
+               
+                <div class="row">
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodComment">Megjegyzés:</label>
+                <div class="col-md-10">
+                <textarea rows="3" class="form-control" name="prodComment" id="prodComment" maxlength="300" value=""/><%=result[0].comment%></textarea><br/>
+                </div>
+                </div>
+                </div>
+
+                <!--webaruhaz blokk -->
+                <div class="row">
+                <div class="col-md-12 text-info text-center">
+                <h4><b>Webáruház adatok</b></h4>
+                
+                <div class="alert alert-danger disabled col-md-6 col-md-offset-3" id="alertDiv">
+                <strong id="msg">HIBA</strong>
+                </div>
+
+                <div class="alert alert-info enabled col-md-6 col-md-offset-3" id="infoDiv">
+                <strong id="msg">Kérem várjon az adatok töltődnek...</strong>
+                </div>
+
+                </div>
+                </div>
+                <div class="row">
+
+                <div class="col-md-4 col-sm-12 col-xs-12 pull-right text-center">
+                <a class="produrl" href="" target="_blank"><img id="prodImg" class="img-responsive" style="border: solid 1px lightgrey; margin: 0 auto; margin-top: 25px; padding: 5px; min-height: 300px;" src="/images/noimage.png"></img></a>
+                <a class="produrl" href="" target="_blank">Ugrás a termékre</a>
+                </div>
+
+                <div class="form-group">
+                <input type="hidden" name="prodIdWeb" id="prodIdWeb" value=""/><br/>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodSkuWeb">Cikkszám(sku):</label>
+                <div class="col-md-6">
+                <input type="text" class="form-control" name="prodSkuWeb" id="prodSkuWeb" disabled required maxlength="8" value=""/><br/>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodNameWeb">Terméknév:</label>
+                <div class="col-md-6">
+                <input type="text" class="form-control" name="prodNameWeb" id="prodNameWeb" disabled required maxlength="150" value=""/><br/>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodQtyWeb">Web Mennyiség (db):</label>
+                <div class="col-md-6">
+                <input type="text" class="form-control" name="prodQtyWeb" id="prodQtyWeb" disabled required maxlength="5" value=""/><br/>
+                </div>
+                </div>
+               
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodPriceWeb">Web Ár (Ft.):</label>
+                <div class="col-md-6">
+                <input type="text" class="form-control" name="prodPriceWeb" id="prodPriceWeb" disabled required maxlength="8" value=""/><br/>
+                </div>
+                </div>
+
+                <div class="form-group">
+                <label class="control-label col-md-2" for="prodSalePriceWeb">Web Akciós Ár (Ft.):
+                <span class="comment">(hagyd üresen az akciós ár törléséhez)</span>
+                </label>
+                <div class="col-md-6">
+                <b><input type="text" class="form-control" name="prodSalePriceWeb" id="prodSalePriceWeb" disabled maxlength="8" value=""/></b><br/>
+                </div>
+                </div>
+              
+                <div class="form-group">
+                <p class="col-md-2"><b>Web Összes Eladás (db): </b></p>
+                <div class="col-md-6">
+                <p id="prodSaleWeb"></p><br/>
+                </div>
+                </div>
+
+                <div class="col-md-8 text-right">
+                <div class="form-group">
+                <label class="checkbox"><input type="checkbox" value="" name="checkWebEdit" id="checkWebEdit" onclick="enableWebForm();">Webadatok szerkesztése és frissítése</label>
+                </div>
+                </div>
+
+                </div> <!--end of row--> 
+
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                    <div class="form-group">
+                        <input type="hidden" id="skuChange" name="skuChange" value="false"/>
+                        <button type="submit" class="btn btn-success">Frissítés</button>
+                        <button type="button" class="btn btn-danger" onclick="window.location.href=(document.referrer)";>Mégse</button>
+                    </div>
+                </div>
+                </div>
+        </form>           
+    </div>
+</div>
+</div>
+</div>
+

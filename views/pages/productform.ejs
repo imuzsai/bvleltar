@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head.ejs'); %>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="/js/socketioclient.js"></script>
+    <title><%=title%></title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <%- include('../partials/header.ejs'); %>
+        </header>
+        <main>
+        <% if ( typeof flash != 'undefined' ) { %>
+                    <% if ( flash.error ) { %>
+                    <div class="alert alert-danger col-md-12">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    <% if(flash.error.length == 1) { %>
+                    <strong> <%- flash.error %> </strong>
+                    <% } else { %>
+                    <ul>
+                    <% flash.error.forEach(function(err) { %>
+                        <li> <strong> <%- err %> </strong></li>
+                        <% }) %>
+                    </ul>
+                    <% } %> 
+                    
+                    </div>
+                    <% } %>
+                    <% if ( flash.info ) { %>
+                        <div class="alert alert-success col-md-12"><%- flash.info %>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        </div>
+                    <% } %>
+        <% } %>
+        <% if (result != "") { %>
+            <%- include('../partials/editproductform.ejs');%>
+        <% } else { %>
+            <%- include('../partials/addproductform.ejs');%>
+        <% } %> 
+        </main>
+         <footer>
+                <%- include('../partials/footer.ejs'); %>
+        </footer>    
+    </div> 
+</body>
+</html>

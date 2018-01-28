@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head.ejs'); %>
+        <title><%=title%></title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <%- include('../partials/header.ejs'); %>
+        </header>
+        <main>
+        <div class="row">
+        <div class="col-md-12">
+        <div class="panel panel-default panel-admin">
+        <div class="panel-heading"><h5><b>Admin funckiók</b></h5></div>
+        <div class="panel-body">
+
+            <div class="col-md-4">
+            <a href="/admin/users"><img src="/images/adduser.jpg" class="img-responsive img-dashboard">
+            <h3 class="text-center">Felhasználók kezelése</h3></a>
+            </div>
+            <div class="col-md-4">
+                <a href="/admin/prodevents"><img src="/images/prodevents.jpg" class="img-responsive img-dashboard">
+                <h3 class="text-center">Termék műveletek listája</h3></a>
+            </div>
+            <div class="col-md-4">
+                <a href="/admin/riports"><img src="/images/riports.jpg" class="img-responsive img-dashboard">
+                <h3 class="text-center">Riportok, kimutatások</h3></a>
+            </div>
+        </div>
+        </div>
+        </div>
+        </div>
+
+        </main>
+        <footer>
+                <%- include('../partials/footer.ejs'); %>
+        </footer>    
+    </div> 
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('../partials/head.ejs'); %>
+        <title><%=title%></title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <%- include('../partials/header.ejs'); %>
+        </header>
+
+        <main>      
+                <% if ( typeof flash != 'undefined' ) { %>
+                    <% if ( flash.error ) { %>
+                    <div class="alert alert-danger col-md-12"><%= flash.error %>
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                    </div>
+                    <% } %>
+                    <% if ( flash.info ) { %>
+                        <div class="alert alert-success col-md-12"><%= flash.info %>
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                        </div>
+                    <% } %>
+                <% } %>
+                <!--A termeklista oldalon ez a blokk nem kell-->
+                <% if ( title != "Terméklista") { %>
+                    <div class="row form-inline">
+                        <div class="col-md-12 pull-right">
+                        <div class="form-group">
+                        <!-- <label for="sel1">Találatok száma oldalanként:</label> -->
+                        <select class="form-control" id="sel1" onchange="window.location.href=this.value;" >
+                        <option default value="">Tálalatok száma oldalanként</option>
+                        <option value='<%= paginate.href({ page: '1', limit: '25' }) %>' >25</option>
+                        <option value='<%= paginate.href({ page: '1', limit: '70' }) %>' >70</option>
+                        <option value='<%= paginate.href({ page: '1', limit: '120' }) %>' >120</option>
+                        </select>
+                        <!-- <label for="sorting">Találatok rendezése:</label> -->
+                        <select class="form-control" id="sorting" onchange="window.location.href=this.value;" >
+                        <option default value="" >Rendezés</option>
+                        <option value='<%= paginate.href({ sort: 'product_sku', order: 'asc' }) %>' >SKU - Növ.</option>
+                        <option value='<%= paginate.href({ sort: 'product_sku', order: 'desc' }) %>' >SKU - Csökk.</option>
+                        <option value='<%= paginate.href({ sort: 'product_name', order: 'asc' }) %>' >Név - Növ.</option>
+                        <option value='<%= paginate.href({ sort: 'product_name', order: 'desc' }) %>' >Név - Csökk.</option>
+                        <option value='<%= paginate.href({ sort: 'quantity', order: 'asc' }) %>' >Mennyiség - Növ.</option>
+                        <option value='<%= paginate.href({ sort: 'quantity', order: 'desc' }) %>' >Mennyiség - Csökk.</option>
+                        <option value='<%= paginate.href({ sort: 'price', order: 'asc' }) %>' >Ár - Növ.</option>
+                        <option value='<%= paginate.href({ sort: 'price', order: 'desc' }) %>' >Ár - Csökk.</option>
+                        </select>
+                        </div>
+                        </div>
+                    </div>
+                    <br/>
+             <% } %>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table table-responsive">
+                                <table class="table table-striped table-hover">
+                                    <thead>
+                                        
+                                        <th>Cikkszám (SKU)</th>
+                                        <th>Terméknév</th>
+                                        <th>Mennyiség</th>
+                                        <th>Ár</th>
+                                        <th>Megjegyzés</th>
+                                        <th>Utolsó módosítás</th>
+                                        <th>Felhasználó</th>
+                                       
+                                        <th></th>
+                                        <th></th>
+                                    </thead>
+                                    <tbody>
+                                        <% results.forEach(function(elem) { %>
+                                            <tr>
+                                               
+                                                <td>
+                                                    <%=elem.product_sku %>
+                                                </td>
+                                                <td>
+                                                    <%=elem.product_name %>
+                                                </td>
+                                                <td>
+                                                    <%=elem.quantity %>
+                                                </td>
+                                                <td>
+                                                    <%=elem.price %>
+                                                </td>
+                                                <td>
+                                                    <%=elem.comment %>
+                                                </td>
+                                                 <td>
+                                                    <%=elem.date %>
+                                                </td>
+                                                <td>
+                                                    <%=elem.username %>
+                                                </td>
+                                                
+                                                <td>
+                                                    <a href="/products/edit/<%=elem.product_id%>"><img src="/images/editicon.png" style="max-width:50px;"  title="Szerkesztés" class="img-thumbnail"></a>
+                                                </td>
+                                                 <td>
+                                                    <a href="javascript:void(0);" id="btndelete" onclick="confirmer(<%=elem.product_id%>)"><img src="/images/deleteicon.png" style="max-width:50px;"  title="Törlés" class="img-thumbnail"></a>
+                                                </td>
+
+                                            </tr>
+                                            <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+    <% if (paginate.hasPreviousPages || paginate.hasNextPages(pageCount) ) { %>
+  <div class="navigation well-sm" id="pagination">
+    <ul class="pager">
+      <% if (paginate.hasPreviousPages) { %>
+        <li class="Előző">
+          <a href="<%= paginate.href(true) %>">
+            <i class="fa fa-arrow-circle-left"></i>
+            Előző
+          </a>  
+        </li>
+      <% } %>  
+      <% if (pages) { %>
+        <% pages.forEach(function(page, i){ %>
+          <a class="<%= paginate.page == page.number ? 'active btn btn-default' : 'btn btn-default'%>" href="<%= page.url %>"><%= page.number %></a>
+        <% }); %>
+      <% } %>  
+      <% if (paginate.hasNextPages(pageCount)) { %>
+        <li class="Következő">
+          <a href="<%= paginate.href() %>">
+            Következő &nbsp;
+            <i class="fa fa-arrow-circle-right"></i>
+          </a>  
+        </li>
+      <% } %>  
+      </ul>      
+    </div>
+  <% } %>
+                        </div>
+                    </div>
+                    <div class="ct-chart ct-perfect-fourth"></div>
+        </main>
+        <footer>
+            <%- include('../partials/footer.ejs'); %>
+        </footer>
+    </div>
+</body>
+
+</html>
