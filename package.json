@@ -1,15 +1,15 @@
 {
-  "name": "nodejs_practice",
+  "name": "bvleltar",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "leltar.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "mui",
-  "license": "ISC",
+  "author": "muzsai istvan",
+  "license": "GNU",
   "repository": {
     "type": "git",
-    "url": "nodejspractice"
+    "url": "bvleltar"
   },
   "description": "",
   "dependencies": {
