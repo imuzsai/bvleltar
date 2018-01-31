@@ -275,9 +275,10 @@ exports.searchResults = function(req,res){
 
 exports.list = function(req, res, error) {
     var userName = req.user.username;
-    db.query('SELECT tbl_prods.*, tbl_prodevents.userid,tbl_prodevents.date from tbl_prods \
-    left join tbl_prodevents on tbl_prodevents.productid = tbl_prods.product_id \
-    where tbl_prodevents.id in (SELECT max(id) FROM tbl_prodevents where productid=tbl_prods.product_id) \
+    db.query('select tbl_prodevents.*,tbl_prods.*, tbl_users.username from tbl_prodevents \
+    left join tbl_users on tbl_prodevents.userid=tbl_users.id \
+    left join tbl_prods on tbl_prodevents.productid = tbl_prods.product_id \
+    WHERE tbl_prodevents.id in (SELECT max(id) FROM tbl_prodevents GROUP BY productid ) \
     and tbl_prodevents.event not like "%Termék törlése%" \
     order by tbl_prods.product_sku DESC limit ?', 50, function(err, results) {
         if (err) {
