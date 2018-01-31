@@ -215,7 +215,7 @@ exports.searchResults = function(req,res){
         FROM (select tbl_prods.* from tbl_prods \
         WHERE tbl_prods.product_name LIKE "+searchString+" OR tbl_prods.product_sku LIKE "+searchString2+" \
         order by tbl_prods.product_name DESC) t";
-        console.log(sql);
+        //console.log(sql);
     }else{
         var sql = "select t.*, (SELECT id FROM tbl_prodevents where tbl_prodevents.productid in (t.product_id) order by id DESC limit 1) as eventid,\
         (select tbl_prodevents.date from tbl_prodevents where id=eventid) as date,\
@@ -223,7 +223,7 @@ exports.searchResults = function(req,res){
         FROM (select tbl_prods.* from tbl_prods \
         WHERE tbl_prods.product_sku like '%"+keresszoveg+"%' OR tbl_prods.product_name like '%"+keresszoveg+"%' \
         order by tbl_prods.product_name DESC) t";
-        console.log(sql);
+        //console.log(sql);
     }
     
     //console.log(sql);

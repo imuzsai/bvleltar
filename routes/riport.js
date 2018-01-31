@@ -12,6 +12,7 @@ exports.list = function(req, res, error) {
     ], function (error, results) {
         if (error) { 
         console.log('Hiba!'); 
+        console.log(error);
         //req.flash('error', error);
         //res.redirect('/error');
         } 
@@ -24,7 +25,7 @@ exports.list = function(req, res, error) {
             console.log(json);
             var eventCounts = json[1];
             var allEventCounts = json[2][0].alleventsnum;
-            var eventStats = json[3];
+            var eventStats = json[3][2];
 
             var allProdsCount = json[0][0].allprodsnum;
             var inStockCount = json[0][0].instocknum;
@@ -62,7 +63,7 @@ function getStocks(callback){
 
 function getEventCounts(callback){        
     db.query('select DATE(date) as date, count(productid) as eventnum from tbl_prodevents \
-    where DATE(date) > "2018-01-09" group by DATE(date) order by date ASC', function (err,result){
+    where DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW() group by DATE(date) order by date ASC', function (err,result){
             if(err){
                 callback (err,null);
             }else{
@@ -72,7 +73,7 @@ function getEventCounts(callback){
 }
 
 function getAllEventCounts(callback){
-    db.query('select count(id) as alleventsnum from tbl_prodevents where DATE(date) > "2018-01-09"', function (err,result){
+    db.query('select count(id) as alleventsnum from tbl_prodevents where DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()', function (err,result){
             if(err){
                 callback (err,null);
             }else{
@@ -82,13 +83,24 @@ function getAllEventCounts(callback){
 }
 
 function getEventDetails(callback){
-    db.query('SELECT  t.nap, (select username from tbl_users where id=userid) as username, count(*) as db \
-    FROM (select DATE(date) as nap, userid, event from tbl_prodevents) t \
-    GROUP BY t.nap, t.userid', function (err,result){
+    db.query('DROP table if exists t2;\
+    CREATE TEMPORARY TABLE IF NOT EXISTS t2 as \
+    SELECT  t.nap, (select username from tbl_users where id=userid) as username, count(*) as db \
+    FROM (select DATE(date) as nap, userid, event from tbl_prodevents where DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()) t \
+    GROUP BY t.nap, t.userid;\
+    SELECT \
+      nap,\
+      MAX(CASE WHEN (username = "adminuser") THEN db ELSE 0 END) AS adminuser, \
+      MAX(CASE WHEN (username = "shopadmin") THEN db ELSE 0 END) AS shopadmin, \
+      MAX(CASE WHEN (username = "adatrogzito") THEN db ELSE 0 END) AS adatrogzito \
+    FROM\
+      t2\
+    GROUP BY nap\
+    ORDER BY nap;', function (err,result){
             if(err){
                 callback (err,null);
             }else{
-                callback (null,result)
+                callback (null,result);
             }
     });
 }
