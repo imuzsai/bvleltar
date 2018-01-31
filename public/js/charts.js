@@ -44,9 +44,9 @@ function chart2() {
 
 //harmadik chart
 function chart3() {
-    var chartData = [['datum', 'adminuser','shopadmin','adatrogzito']];
+    var chartData = [['datum', 'muneszilvi','ordogerika','kovacskatalin']];
     for(i=0; i < eventStats.length;i++){
-        chartData[i + 1] = [eventStats[i].nap,eventStats[i].adminuser,eventStats[i].shopadmin,eventStats[i].adatrogzito]; 
+        chartData[i + 1] = [eventStats[i].nap,eventStats[i].muneszilvi,eventStats[i].ordogerika,eventStats[i].kovacskatalin]; 
     }
     var data = google.visualization.arrayToDataTable(chartData);
 
