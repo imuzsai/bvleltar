@@ -90,9 +90,9 @@ function getEventDetails(callback){
     GROUP BY t.nap, t.userid;\
     SELECT \
       nap,\
-      MAX(CASE WHEN (username = "adminuser") THEN db ELSE 0 END) AS adminuser, \
-      MAX(CASE WHEN (username = "shopadmin") THEN db ELSE 0 END) AS shopadmin, \
-      MAX(CASE WHEN (username = "adatrogzito") THEN db ELSE 0 END) AS adatrogzito \
+      MAX(CASE WHEN (username = "muneszilvi") THEN db ELSE 0 END) AS muneszilvi,\
+      MAX(CASE WHEN (username = "ordogerika") THEN db ELSE 0 END) AS ordogerika,\
+      MAX(CASE WHEN (username = "kovacskatalin") THEN db ELSE 0 END) AS kovacskatalin\
     FROM\
       t2\
     GROUP BY nap\
