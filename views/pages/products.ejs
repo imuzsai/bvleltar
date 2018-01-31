@@ -59,7 +59,7 @@
                             <div class="table table-responsive">
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                        
+                                        <th>ID</th>
                                         <th>Cikkszám (SKU)</th>
                                         <th>Terméknév</th>
                                         <th>Mennyiség</th>
@@ -74,7 +74,9 @@
                                     <tbody>
                                         <% results.forEach(function(elem) { %>
                                             <tr>
-                                               
+                                                <td>
+                                                    <%=elem.product_id %>
+                                                </td>
                                                 <td>
                                                     <%=elem.product_sku %>
                                                 </td>

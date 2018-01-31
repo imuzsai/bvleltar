@@ -160,8 +160,8 @@ exports.update = function(req, res) {
                                    res.redirect(req.get('referer')); 
                        
                                } else {
-                                    ios.emit('extConnErr',"Csatlakozás webáruházhoz - Kérem várjon...");
                                     if(req.body.checkWebEdit){
+                                        ios.emit('extConnErr',"Csatlakozás webáruházhoz - Kérem várjon...");
                                         updateWebData(webData, function(err, result){
                                             if (err) {
                                                 req.flash('error', "Sikertelen webáruház adatfrissítés. Hiba: "+err );
