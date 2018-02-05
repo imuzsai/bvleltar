@@ -34,11 +34,12 @@ app.use(session({
     , resave  : 'false'
     , saveUninitialized: 'true'
     , cookie:{
-        maxAge: 2000*60*60 // default session expiration is set to 2 hours
+        maxAge: 1000*60*60 // default session expiration is set to 2 hours
         , httpOnly: 'true'
         }
     , store   : new MemcachedStore({
         hosts: ['127.0.0.1:11211'],
+        ttl: 3600,
         secret: 'almasretescsirkeporkolt' // Optionally use transparent encryption for memcache session data 
     })
 }));
