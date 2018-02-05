@@ -34,7 +34,7 @@ app.use(session({
     , resave  : 'false'
     , saveUninitialized: 'true'
     , cookie:{
-        maxAge: 1000*60*60 // default session expiration is set to 1 hour
+        maxAge: 2000*60*60 // default session expiration is set to 2 hours
         , httpOnly: 'true'
         }
     , store   : new MemcachedStore({
