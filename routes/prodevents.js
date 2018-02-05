@@ -15,7 +15,7 @@ exports.list = function(req, res, error) {
         //req.flash('error', error);
         //res.redirect('/error');
         }
-        console.log('Done!');
+        //console.log('Done!');
         //console.log(results[1]);
         var dateSelectorVals = results[1];
         var userSelectorVals = results[0];
@@ -26,7 +26,7 @@ exports.list = function(req, res, error) {
         var dateSelectorEnd = ((dateSelectorVals[0].endDate).split(" "))[0];
         //itt dontjuk el van-e filter a listan
         if(typeof req.query.isFilter == 'undefined'){
-        console.log("nincs filter");
+        //console.log("nincs filter");
         //elmult 1 het esemenyei
         var sql = 'select tbl_prodevents.*, tbl_prods.*, tbl_users.username from tbl_prodevents \
         left join tbl_prods on tbl_prodevents.productid=tbl_prods.product_id \
@@ -35,7 +35,7 @@ exports.list = function(req, res, error) {
         }else{
             //ha van filter akkor a szuro inputok a beallitott erteket jelenitik meg
             //a szuresi felteteleket attol fuggoen kell sql-be fuzni, hogy mi van megadva
-            console.log("van filter");
+            //console.log("van filter");
             var filterArray = [];
             var sqlBaseString = 'select tbl_prodevents.*, tbl_prods.*, tbl_users.username from tbl_prodevents \
             left join tbl_prods on tbl_prodevents.productid=tbl_prods.product_id \

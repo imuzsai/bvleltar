@@ -11,18 +11,18 @@ exports.list = function(req, res, error) {
         getEventDetails //melyik user hany muveletet vegzett
     ], function (error, results) {
         if (error) { 
-        console.log('Hiba!'); 
-        console.log(error);
+        //console.log('Hiba!'); 
+        //console.log(error);
         //req.flash('error', error);
         //res.redirect('/error');
         } 
         else {
-        console.log('Done!');
+        //console.log('Done!');
         //console.log(results);
    
             var string = JSON.stringify(results);
             var json =  JSON.parse(string);
-            console.log(json);
+            //console.log(json);
             var eventCounts = json[1];
             var allEventCounts = json[2][0].alleventsnum;
             var eventStats = json[3][2];

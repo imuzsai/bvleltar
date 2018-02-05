@@ -4,7 +4,7 @@ var sortBy = require('array-sort');
 var woocommerce = require('../lib/woocommerce.js');
 //socketio
 ios.on('connection', function(socket){
-    console.log("a user connected");
+    //console.log("a user connected");
 });
 
 
@@ -21,14 +21,14 @@ exports.add = function(req, res) {
     var sql = "SELECT * from `tbl_prods` where `product_sku` = ?";
     var query = db.query(sql, [prodsku], function(err, result) {
         if (result.length>0) {
-            console.log("benne van az sku");
+            //console.log("benne van az sku");
             req.flash('error', "Már létező SKU!");
             res.redirect(req.get('referer')); 
         } else {
             var sql = "SET @userid = '"+userid+"';Insert INTO tbl_prods (`product_sku`, `product_name`, `quantity`, `price`, `comment`) values (?,?,?,?,?)";
             var query = db.query(sql, [prodsku,name,qty,price,comment], function(err, result) {
                 if (err) {
-                    console.log(result);
+                    //console.log(result);
                     req.flash('error', "Sikertelen rögzítés, próbálja újra!");
                     res.redirect(req.get('referer'));
                 } else {
@@ -307,7 +307,7 @@ exports.delete = function(req,res){
     var userName = req.user.username;
     var userid = req.user.id;
     var prodid = req.params.id;
-    console.log(prodid);
+    //console.log(prodid);
     db.query("SET @userid = '"+userid+"'; DELETE FROM tbl_prods WHERE product_id = ?", [prodid] , function(err, result) {
         if (err) {
             req.flash('error', err);
@@ -357,13 +357,13 @@ function updateProduct(data, callback){
         var sql = "SELECT * from `tbl_prods` where `product_sku` = ?";
         var query = db.query(sql, [data.prodSku], function(err, result) {
             if (result.length>0) {
-                console.log("benne van az sku");
+                //console.log("benne van az sku");
                 callback(null,"skuexists");
             }else{
                 var sql = "SET @userid = '"+data.userId+"'; UPDATE tbl_prods SET `product_sku` = ?, `product_name` = ?, `quantity` = ?, `price`= ?, `comment`= ? where `product_id`= ?";
                 var query = db.query(sql, [data.prodSku,data.prodName,data.prodQty,data.prodPrice,data.prodComment,data.prodId], function(err, result) {
                     if (err) {
-                        console.log(err);
+                        //console.log(err);
                         callback(err, null);
                     } else 
                         callback(null, result);
@@ -374,7 +374,7 @@ function updateProduct(data, callback){
     var sql = "SET @userid = '"+data.userId+"'; UPDATE tbl_prods SET `product_sku` = ?, `product_name` = ?, `quantity` = ?, `price`= ?, `comment`= ? where `product_id`= ?";
         var query = db.query(sql, [data.prodSku,data.prodName,data.prodQty,data.prodPrice,data.prodComment,data.prodId], function(err, result) {
             if (err) {
-                console.log(err);
+                //console.log(err);
                 callback(err, null);
             } else 
                 callback(null, result);
