@@ -10,7 +10,7 @@
                 <div class="panel panel-primary panel-login">
                     <div class="panel-heading">BV Leltár - Bejelentkezés</div>
                     <div class="panel-body">
-                     <% if ( typeof flash != 'undefined' ) { %>
+                    <% if ( typeof flash != 'undefined' ) { %>
                     <% if ( flash.error ) { %>
                     <div class="alert alert-danger col-md-12">
                     <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
@@ -38,7 +38,7 @@
                                         <input type="textbox" class="form-control" name="username" id="user" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="pwd">Jelszó:</label>
+                                        <label for="pwd">Jelszó: </label> 
                                         <input type="password" class="form-control" name="password" id="pwd" required></br>
                                     </div>
                                     <button type="submit" class="btn btn-default text-center">Belépés</button>

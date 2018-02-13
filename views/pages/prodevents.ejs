@@ -79,8 +79,8 @@
                                         <th>Művelet</th>
                                         <th>TermékId</th>
                                         <th>Felhasználó</th>
-                                        <th>Régi adatok</th>
-                                        <th>Jelenlegi adatok</th>
+                                        <th>Eredeti adatok</th>
+                                        <th>Módosított adatok</th>
                                     </thead>
                                     <tbody>
                                         <% results.forEach(function(elem) { %>
@@ -98,18 +98,10 @@
                                                     <%=elem.username %>
                                                 </td>
                                                 <td>
-                                                    SKU: <%=elem.old_sku%></br>
-                                                    Név: <%=elem.old_name%></br>
-                                                    Ár: <%=elem.old_price%></br>
-                                                    Mennyiség: <%=elem.old_quantity%></br>
-                                                    Megjegyzés: <%=elem.old_comment%></br>
+                                                    <%=elem.origdata %>
                                                 </td>
                                                 <td>
-                                                    SKU: <%=elem.product_sku%></br>
-                                                    Név: <%=elem.product_name%></br>
-                                                    Ár: <%=elem.price%></br>
-                                                    Mennyiség: <%=elem.quantity%></br>
-                                                    Megjegyzés: <%=elem.comment%></br>
+                                                    <%=elem.newdata %>
                                                 </td>
 
                                             </tr>
