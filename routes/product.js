@@ -18,15 +18,18 @@ exports.add = function(req, res) {
     var qty = req.body.prodQty;
     var price = req.body.prodPrice;
     var comment = req.body.prodComment;
+    db.getConnection(function(err, connection) {
     var sql = "SELECT * from `tbl_prods` where `product_sku` = ?";
-    var query = db.query(sql, [prodsku], function(err, result) {
+    connection.query(sql, [prodsku], function(err, result) {
         if (result.length>0) {
+            connection.release();
             //console.log("benne van az sku");
             req.flash('error', "Már létező SKU!");
             res.redirect(req.get('referer')); 
         } else {
             var sql = "SET @userid = '"+userid+"';Insert INTO tbl_prods (`product_sku`, `product_name`, `quantity`, `price`, `comment`) values (?,?,?,?,?)";
-            var query = db.query(sql, [prodsku,name,qty,price,comment], function(err, result) {
+            connection.query(sql, [prodsku,name,qty,price,comment], function(err, result) {
+                connection.release();
                 if (err) {
                     //console.log(result);
                     req.flash('error', "Sikertelen rögzítés, próbálja újra!");
@@ -38,7 +41,8 @@ exports.add = function(req, res) {
                 //mysqlconn.end();
                 }); 
         }          
-    }); 
+    });
+    });
     }else{
         var userName = req.user.username;
         title = "Termék hozzáadása"
@@ -55,11 +59,12 @@ exports.edit = function(req, res) {
     var message = '';
     var imgurl = "";
     var extData = {};
-    db.query("SELECT * FROM `tbl_prods` WHERE `product_id`= ?", [prodid] , function(err, result) {
+    db.getConnection(function(err, connection) {
+    connection.query("SELECT * FROM `tbl_prods` WHERE `product_id`= ?", [prodid] , function(err, result) {
+        connection.release();
         if (err) {
             req.flash('error', err);
             res.redirect('/error');
-
         } else {
             //woocommerce adatok lekerdezese a termekhez
             //console.log(result[0].product_sku);
@@ -121,10 +126,9 @@ exports.edit = function(req, res) {
                     res.send(html);
                     //ios.emit('extConnErr','Kérem várjon!');
                 }
-            });  
-            
-                 
+            });       
         }
+    });
     });
     
 }
@@ -228,7 +232,9 @@ exports.searchResults = function(req,res){
     
     //console.log(sql);
     //ossze kell allitani a queryt ha szabad szavas kereses es space van kozottuk
-    db.query(sql, function(err, rows) {
+    db.getConnection(function(err, connection) {
+    connection.query(sql, function(err, rows) {
+        connection.release();
         if (err) {
             req.flash('error', err);
             res.redirect('/error');
@@ -272,18 +278,20 @@ exports.searchResults = function(req,res){
             }
         }
     });
-
+    });
 }
 
 exports.list = function(req, res, error) {
     var userName = req.user.username;
-    db.query('select t.*, (SELECT id FROM tbl_prodevents where event not like "%Termék törlése%" \
+    db.getConnection(function(err, connection) {
+    connection.query('select t.*, (SELECT id FROM tbl_prodevents where event not like "%Termék törlése%" \
     and tbl_prodevents.productid in (t.product_id) order by id DESC limit 1) as eventid,\
     (select tbl_prodevents.date from tbl_prodevents where id=eventid) as date,\
     (select tbl_users.username from tbl_users,tbl_prodevents where tbl_prodevents.id=eventid \
     and tbl_prodevents.userid=tbl_users.id) as username\
     FROM (select tbl_prods.* from tbl_prods\
     order by tbl_prods.product_sku DESC limit ?) t', 50, function(err, results) {
+        connection.release();
         if (err) {
             req.flash('error', err);
             res.redirect('/error');
@@ -301,6 +309,7 @@ exports.list = function(req, res, error) {
                   });            
         }
         });
+    });
 }
 
 exports.delete = function(req,res){
