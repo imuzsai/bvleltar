@@ -324,8 +324,11 @@ exports.delete = function(req,res){
 
 //termek frissitese a webaruhaz adatbazisaban rest api-val
 function updateWebData(webData,callback){
+    var date = new Date();
+    //console.log(date);
     var prodData = {
         "product": {
+            "created_at": 'date',
             "sku": webData.prodSkuWeb,
             "title": webData.prodNameWeb,
             "stock_quantity": webData.prodQtyWeb,
