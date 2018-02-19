@@ -317,7 +317,9 @@ exports.delete = function(req,res){
     var userid = req.user.id;
     var prodid = req.params.id;
     //console.log(prodid);
-    db.query("SET @userid = '"+userid+"'; DELETE FROM tbl_prods WHERE product_id = ?", [prodid] , function(err, result) {
+    db.getConnection(function(err, connection) {
+    connection.query("SET @userid = '"+userid+"'; DELETE FROM tbl_prods WHERE product_id = ?", [prodid] , function(err, result) {
+        connection.release();
         if (err) {
             req.flash('error', err);
             res.redirect('/error');
@@ -326,9 +328,8 @@ exports.delete = function(req,res){
             req.flash('info', "Termek törlése sikeresen megtörtént!");
             res.redirect('/');                
         }
-        //mysqlconn.end();
     });
-   
+});
 }
 
 //termek frissitese a webaruhaz adatbazisaban rest api-val
@@ -365,15 +366,16 @@ function updateWebData(webData,callback){
 
 //termek frissitese a helyi adatbazisban
 function updateProduct(data, callback){
+    db.getConnection(function(err, connection) {
     if(data.skuChange == "true"){//true jon at ha volt sku csere. letezo sku-t csekkolni kell
         var sql = "SELECT * from `tbl_prods` where `product_sku` = ?";
-        var query = db.query(sql, [data.prodSku], function(err, result) {
+        connection.query(sql, [data.prodSku], function(err, result) {
             if (result.length>0) {
                 //console.log("benne van az sku");
                 callback(null,"skuexists");
             }else{
                 var sql = "SET @userid = '"+data.userId+"'; UPDATE tbl_prods SET `product_sku` = ?, `product_name` = ?, `quantity` = ?, `price`= ?, `comment`= ? where `product_id`= ?";
-                var query = db.query(sql, [data.prodSku,data.prodName,data.prodQty,data.prodPrice,data.prodComment,data.prodId], function(err, result) {
+                connection.query(sql, [data.prodSku,data.prodName,data.prodQty,data.prodPrice,data.prodComment,data.prodId], function(err, result) {
                     if (err) {
                         //console.log(err);
                         callback(err, null);
@@ -384,7 +386,7 @@ function updateProduct(data, callback){
         });
     }else{
     var sql = "SET @userid = '"+data.userId+"'; UPDATE tbl_prods SET `product_sku` = ?, `product_name` = ?, `quantity` = ?, `price`= ?, `comment`= ? where `product_id`= ?";
-        var query = db.query(sql, [data.prodSku,data.prodName,data.prodQty,data.prodPrice,data.prodComment,data.prodId], function(err, result) {
+        connection.query(sql, [data.prodSku,data.prodName,data.prodQty,data.prodPrice,data.prodComment,data.prodId], function(err, result) {
             if (err) {
                 //console.log(err);
                 callback(err, null);
@@ -392,4 +394,6 @@ function updateProduct(data, callback){
                 callback(null, result);
         });
     }
+    connection.release();
+});
 }

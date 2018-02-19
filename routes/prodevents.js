@@ -66,8 +66,10 @@ exports.list = function(req, res, error) {
 
             //console.log("ez az: "+sql);
         }
-        //sql lekeres futtatasa
-        db.query(sql , function(err, rows) {
+        //sql lekeres
+        db.getConnection(function(err, connection) {
+        connection.query(sql , function(err, rows) {
+            connection.release();
             if (err) {
             req.flash('error', err);
             res.redirect('/error');
@@ -119,12 +121,15 @@ exports.list = function(req, res, error) {
                   });
             }
         }
+    });
     });        
 });
 }
 
 function getUsers(callback){
-db.query('select username from tbl_users order by username DESC', function (err,result){
+    db.getConnection(function(err, connection) {
+    connection.query('select username from tbl_users order by username DESC', function (err,result){
+        connection.release();
         if(err){
 
             callback (err,null);
@@ -138,11 +143,14 @@ db.query('select username from tbl_users order by username DESC', function (err,
             //console.log(users);
             callback (null,users)
         }
+    });
 });
 }
 
 function getDates(callback){
+    db.getConnection(function(err, connection) {
     db.query('select max(date) as endDate, min(date) as startDate from tbl_prodevents', function (err,result){
+        connection.release();
         if(err){
              callback (err,null);
         }else{
@@ -151,6 +159,7 @@ function getDates(callback){
              //console.log(result);
              callback (null,json)
         }
+    });
 });
 }   
 

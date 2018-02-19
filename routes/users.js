@@ -2,8 +2,10 @@ var bcrypt = require('bcrypt-nodejs');
 
 exports.list = function(req, res, error) {
     var userName = req.user.username;
-    db.query('SELECT tbl_users.id,tbl_users.username,tbl_users.status,tbl_roles.roleName from tbl_users LEFT JOIN tbl_roles on tbl_users.roleId = tbl_roles.id order by tbl_users.id DESC limit ?', 
+    db.getConnection(function(err, connection) {
+    connection.query('SELECT tbl_users.id,tbl_users.username,tbl_users.status,tbl_roles.roleName from tbl_users LEFT JOIN tbl_roles on tbl_users.roleId = tbl_roles.id order by tbl_users.id DESC limit ?', 
     25, function(err, results) {
+        connection.release();
         if (err) {
             req.flash('error', err);
             res.redirect('/error');
@@ -21,6 +23,7 @@ exports.list = function(req, res, error) {
                   });            
         }
         });
+    });
 }
 
 exports.add = function(req, res) {
@@ -34,7 +37,9 @@ exports.edit = function(req, res) {
     var userid = req.params.id;
     var userName = req.user.username;
     var message = '';
-    db.query("SELECT * FROM `tbl_users` WHERE `id`= ?", [userid] , function(err, result) {
+    db.getConnection(function(err, connection) {
+    connection.query("SELECT * FROM `tbl_users` WHERE `id`= ?", [userid] , function(err, result) {
+        connection.release();
         if (err) {
             req.flash('error', err);
             res.redirect('/error');
@@ -45,9 +50,8 @@ exports.edit = function(req, res) {
             res.render('pages/edituserform', { layout:false, result, title, userName, flash: req.flash() });
             //mysqlconn.end();                
         }
-        //mysqlconn.end();
     });
-    
+});    
 }
 
 exports.update = function(req, res) {
@@ -58,9 +62,10 @@ exports.update = function(req, res) {
         var status = req.body.statusSelect;
         var role = req.body.roleSelect;
         var password = req.body.password;
+        db.getConnection(function(err, connection) {
             //username already exists
             var sql = "SELECT * from `tbl_users` where `username` = ?";
-            var query = db.query(sql, [username], function(err, result) {
+            connection.query(sql, [username], function(err, result) {
                 if (err){
                 req.flash('error', err);
                 res.redirect('/error');
@@ -74,7 +79,8 @@ exports.update = function(req, res) {
                     if (password){
                         var dbpassword = bcrypt.hashSync(password, null, null);
                         var sql = "UPDATE tbl_users SET `username` = ?, `password` = ?, `status` = ?, `roleId`= ? where `id`=?";
-                        var query = db.query(sql, [username,dbpassword,status,role,id], function(err, result) {
+                        connection.query(sql, [username,dbpassword,status,role,id], function(err, result) {
+                            connection.release();
                             if (err) {
                                 req.flash('error', "Sikertelen frissítés, ellenőrizd az adatokat!");
                                 res.redirect(req.get('referer')); 
@@ -86,7 +92,8 @@ exports.update = function(req, res) {
                             }); 
                     } else {
                         var sql = "UPDATE tbl_users SET `username` = ?, `status` = ?, `roleId`= ? where `id`= ? ";
-                        var query = db.query(sql, [username,status,role,id], function(err, result) {
+                        connection.query(sql, [username,status,role,id], function(err, result) {
+                            connection.release();
                             if (err) {
                                 console.log(err);
                                 req.flash('error', "Sikertelen frissítés, ellenőrizd az adatokat!");
@@ -100,5 +107,6 @@ exports.update = function(req, res) {
                     }
                 }
         });
+    });
     }
 }

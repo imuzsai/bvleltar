@@ -52,38 +52,48 @@ exports.list = function(req, res, error) {
 }
 
 function getStocks(callback){
-    db.query('SELECT (SELECT count(product_id) as a from tbl_prods)as allprodsnum, (SELECT count(product_id) as b from tbl_prods where quantity > 0)as instocknum', function (err,result){
+    db.getConnection(function(err, connection) {
+    connection.query('SELECT (SELECT count(product_id) as a from tbl_prods)as allprodsnum, (SELECT count(product_id) as b from tbl_prods where quantity > 0)as instocknum', function (err,result){
+        connection.release();
             if(err){
                 callback (err,null);
             }else{
                 callback (null,result)
             }
     });
+});
 }
 
-function getEventCounts(callback){        
-    db.query('select DATE(date) as date, count(productid) as eventnum from tbl_prodevents \
+function getEventCounts(callback){    
+    db.getConnection(function(err, connection) {    
+    connection.query('select DATE(date) as date, count(productid) as eventnum from tbl_prodevents \
     where DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW() group by DATE(date) order by date ASC', function (err,result){
+            connection.release();
             if(err){
                 callback (err,null);
             }else{
                 callback (null,result)
             }
     });
+});
 }
 
 function getAllEventCounts(callback){
-    db.query('select count(id) as alleventsnum from tbl_prodevents where DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()', function (err,result){
+    db.getConnection(function(err, connection) {
+    connection.query('select count(id) as alleventsnum from tbl_prodevents where DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()', function (err,result){
+        connection.release();
             if(err){
                 callback (err,null);
             }else{
                 callback (null,result)
             }
     });
+});
 }
 
 function getEventDetails(callback){
-    db.query('DROP table if exists t2;\
+    db.getConnection(function(err, connection) {
+    connection.query('DROP table if exists t2;\
     CREATE TEMPORARY TABLE IF NOT EXISTS t2 as \
     SELECT  t.nap, (select username from tbl_users where id=userid) as username, count(*) as db \
     FROM (select DATE(date) as nap, userid, event from tbl_prodevents where DATE(date) BETWEEN (NOW() - INTERVAL 7 DAY) AND NOW()) t \
@@ -97,10 +107,12 @@ function getEventDetails(callback){
       t2\
     GROUP BY nap\
     ORDER BY nap;', function (err,result){
+        connection.release();
             if(err){
                 callback (err,null);
             }else{
                 callback (null,result);
             }
     });
+});
 }
