@@ -60,12 +60,7 @@ app.post('/login', function(req, res){
                 failureFlash : true // allow flash messages
             })(req,res),
             function(req, res) {
-                    if (req.body.remember) {
-                    req.session.cookie.maxAge = 1000 * 60 * 3;
-                    //req.session.cookie.maxAge = 1000;
-                    } else {
-                    req.session.cookie.expires = false;
-                    }
+                    //a remember me middleware-ben van a config.js-ben
                     res.redirect('/');
             }
         }

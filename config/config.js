@@ -35,7 +35,7 @@ app.use(session({
     , saveUninitialized: 'true'
     , cookie:{
         maxAge: 2000*60*60 // default session expiration is set to 2 hours
-        , httpOnly: 'true'
+        ,httpOnly: 'true'
         }
     , store   : new MemcachedStore({
         hosts: ['127.0.0.1:11211'],
@@ -63,6 +63,17 @@ app.set('view engine', 'ejs');
 app.use(flash());
 //
 
+//remember me middleware
+app.use( function (req, res, next) {
+    if ( req.method == 'POST' && req.url == '/login' ) {
+      if ( req.body.rememberme ) {
+        req.session.cookie.maxAge = 86400000; // 1*24*60*60*1000 Rememeber 'me' for 1 day
+      } else {
+        req.session.cookie.expires = false;
+      }
+    }
+    next();
+  });
 
 
 };
