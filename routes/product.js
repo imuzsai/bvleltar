@@ -59,6 +59,7 @@ exports.edit = function(req, res) {
     var message = '';
     var imgurl = "";
     var extData = {};
+    var socketid=req.query.id
     db.getConnection(function(err, connection) {
     connection.query("SELECT * FROM `tbl_prods` WHERE `product_id`= ?", [prodid] , function(err, result) {
         connection.release();
