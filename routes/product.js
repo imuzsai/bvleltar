@@ -59,7 +59,7 @@ exports.edit = function(req, res) {
     var message = '';
     var imgurl = "";
     var extData = {};
-    var socketid=req.query.id
+    var socketId=req.query.Id;
     db.getConnection(function(err, connection) {
     connection.query("SELECT * FROM `tbl_prods` WHERE `product_id`= ?", [prodid] , function(err, result) {
         connection.release();
@@ -95,22 +95,22 @@ exports.edit = function(req, res) {
                     }
                     extData.totalSale = obj.products[0].total_sales; 
                     //send data to socketio
-                    ios.sockets.connected[socketid].emit('data', extData);
+                    ios.emit('data', extData);
                     }
                     else{
                         console.log("ures products jott vissza");
                         woologger.warn('Termék nem létezik a webáruházban. SKU: ', result[0].product_sku );
-                        ios.sockets.connected[socketid].emit('extConnErr','Termék nem található a webáruházban!');
+                        ios.emit('extConnErr','Termék nem található a webáruházban!');
                     }
                 }else
                     {
                         if(typeof obj.errors != 'undefined'){
                         //console.log(obj.errors);
                         woologger.error('Webáruház lekérdezés hiba! ', obj.errors[0].message);
-                        ios.sockets.connected[socketid].emit('extConnErr',obj.errors[0].message);
+                        ios.emit('extConnErr',obj.errors[0].message);
                         } else 
                             {
-                            ios.sockets.connected[socketid].emit('extConnErr','Hiba a kapcsolat felépítése során!');
+                            ios.eio.connected[socketId].emit('extConnErr','Hiba a kapcsolat felépítése során!');
                             console.log ("nem jott valasz");
                             woologger.error('Webáruház kapcsolódási hiba! ');
                             }
