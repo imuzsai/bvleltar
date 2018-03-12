@@ -2,10 +2,17 @@ var paginate = require('express-paginate');
 var sortBy = require('array-sort');
 //Woocommerce
 var woocommerce = require('../lib/woocommerce.js');
-//socketio
-ios.on('connection', function(socket){
-    //console.log("a user connected");
+
+// socketio event fired every time a new client connects:
+ios.on("connection", function(socket){
+    global.socketid = socket.id;
+    console.info(`Client connected `+ socket.id);
+        // when socket disconnects, remove it from the list:
+    socket.on("disconnect", () => {
+        console.info(`Client gone ` + socket.id);
+    });
 });
+
 
 
 exports.add = function(req, res) {
@@ -59,7 +66,7 @@ exports.edit = function(req, res) {
     var message = '';
     var imgurl = "";
     var extData = {};
-    var socketId=req.query.Id;
+   
     db.getConnection(function(err, connection) {
     connection.query("SELECT * FROM `tbl_prods` WHERE `product_id`= ?", [prodid] , function(err, result) {
         connection.release();
@@ -95,22 +102,24 @@ exports.edit = function(req, res) {
                     }
                     extData.totalSale = obj.products[0].total_sales; 
                     //send data to socketio
-                    ios.emit('data', extData);
+                    //ios.emit('data', extData);
+                    ios.to(socketid).emit('data', extData);
+                    
                     }
                     else{
                         console.log("ures products jott vissza");
                         woologger.warn('Termék nem létezik a webáruházban. SKU: ', result[0].product_sku );
-                        ios.emit('extConnErr','Termék nem található a webáruházban!');
+                        ios.to(socketid).emit('extConnErr','Termék nem található a webáruházban!');
                     }
                 }else
                     {
                         if(typeof obj.errors != 'undefined'){
                         //console.log(obj.errors);
                         woologger.error('Webáruház lekérdezés hiba! ', obj.errors[0].message);
-                        ios.emit('extConnErr',obj.errors[0].message);
+                        ios.to(socketid).emit('extConnErr',obj.errors[0].message);
                         } else 
                             {
-                            ios.eio.connected[socketId].emit('extConnErr','Hiba a kapcsolat felépítése során!');
+                            ios.to(socketid).emit('extConnErr','Hiba a kapcsolat felépítése során!');
                             console.log ("nem jott valasz");
                             woologger.error('Webáruház kapcsolódási hiba! ');
                             }
@@ -166,7 +175,8 @@ exports.update = function(req, res) {
                        
                                } else {
                                     if(req.body.checkWebEdit){
-                                        ios.emit('extConnErr',"Csatlakozás webáruházhoz - Kérem várjon...");
+                                        
+                                        ios.to(socketid).emit('extConnErr',"Csatlakozás webáruházhoz - Kérem várjon...");
                                         updateWebData(webData, function(err, result){
                                             if (err) {
                                                 req.flash('error', "Sikertelen webáruház adatfrissítés. Hiba: "+err );

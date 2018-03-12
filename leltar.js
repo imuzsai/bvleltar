@@ -29,6 +29,7 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 global.ios = io;
 
+
 // Routes
 var product = require(envConfig.rootPath +'./routes/product.js');
 var users = require(envConfig.rootPath +'./routes/users.js');

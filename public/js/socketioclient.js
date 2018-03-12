@@ -1,8 +1,10 @@
 //var socket = io.connect('http://localhost:8080');
 var socket = io();
     socket.on('connect', function(data) {
+        console.log("io connected");
     });
     
+
     socket.on('data', function(data) {
         //alert("socket adat");
         document.getElementById("infoDiv").classList.replace("enabled","disabled");
@@ -30,5 +32,5 @@ var socket = io();
     });
 
     socket.on('disconnect', function(){
-    //console.log('user disconnected');
+     console.log('user disconnected');
     });
