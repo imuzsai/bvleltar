@@ -29,6 +29,12 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 global.ios = io;
 
+//chat messages
+ios.on('connection', function(socket){
+    socket.on('chat message', function(msg,req,res){
+      ios.emit('chat message', 'alma: '+msg);
+    });
+  });
 
 // Routes
 var product = require(envConfig.rootPath +'./routes/product.js');

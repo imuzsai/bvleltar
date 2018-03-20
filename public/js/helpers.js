@@ -44,3 +44,12 @@ function confirmer(id){
         return false;
     }
 };
+
+function controlchat(){
+    var chat = document.getElementById("chatdiv");
+    if (chat.style.bottom == "-408px"){
+        chat.style.bottom = "10px";
+    }else {
+        chat.style.bottom = "-408px";
+    }
+}

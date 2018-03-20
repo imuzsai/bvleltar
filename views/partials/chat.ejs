@@ -1,0 +1,34 @@
+<!--chat DIV:-->
+<script src="/socket.io/socket.io.js"></script>
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    $(function () {
+      var socket = io();
+      $('form').submit(function(){
+        socket.emit('chat message', $('#m').val());
+        $('#m').val('');
+        return false;
+      });
+      socket.on('chat message', function(msg){
+        $('#messages').append($('<li>').text(msg));
+      });
+    });
+  </script>
+      
+<div id="chatdiv">
+    <div class="panel panel-default panel-charts">
+        <div class="panel-heading">chatwindow<a role="button" class="text-right" style="color:#ffffff; padding:10px;" onclick="controlchat();"><span class="glyphicon glyphicon-resize-vertical"></span></a></div>
+        <div class="panel-body">
+            <ul id="messages"></ul>
+            <div class="form-group"></div>
+            <form action="">
+              <input id="m" class="form-control" autocomplete="off" />
+              <button type="submit" class="btn btn-success">Küldés</button>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+           
+        

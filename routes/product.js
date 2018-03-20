@@ -346,7 +346,7 @@ exports.delete = function(req,res){
 //termek frissitese a webaruhaz adatbazisaban rest api-val
 function updateWebData(webData,callback){
     var date = new Date();
-    //console.log(date);
+    console.log(webData);
     var prodData = {
         "product": {
             "created_at": 'date',
@@ -360,6 +360,7 @@ function updateWebData(webData,callback){
       };
     woocommerce.put('products/'+webData.prodIdWeb+'', prodData, function(err, data, response) {
         if(response){
+            console.log(response);
             var obj = JSON.parse(response);
             //console.log(obj);
                 if(typeof obj.errors != 'undefined'){
